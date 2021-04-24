@@ -22,7 +22,8 @@ class DisplayContent:
 		return len(self.__data[0])
 
 	def set(self, column : int, row : int, value : Pixel) -> None:
-		self.__data[column][row] = value
+		if (column < self.num_columns() and row < self.num_rows()):
+			self.__data[column][row] = value
 
 	def set_all(self, value : Pixel) -> None:
 		for column in self.__data:
@@ -50,6 +51,16 @@ class DisplayContent:
 	def rotate_180(self) -> None:
 		self.reverse_columns()
 		self.reverse_rows()
+
+	def invert(self, x : int = 0, y : int = 0, width : int = None, height : int = None) -> None:
+		if width is None:
+			width = self.num_columns()
+		if height is None:
+			height = self.num_rows()
+		for column_idx in range(x, min(x+width, self.num_columns())):
+			for row_idx in range(y, min(y+height, self.num_rows())):
+				self.__data[column_idx][row_idx] = \
+					Pixel.LIGHT if self.__data[column_idx][row_idx] == Pixel.DARK else Pixel.DARK
 
 	def diff_column_vectors(self, other : DisplayContent) -> List[Tuple[int, List[Pixel]]]:
 		"""

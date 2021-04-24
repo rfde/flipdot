@@ -1,22 +1,22 @@
-from typing import List
 from display.content import Pixel, DisplayContent
 from display.simulation import DisplaySimulation
 from display.flipdot import DisplayFlipdot
+from display.object.charsequence import DisplayObjCharSequence
+from display.object.image import DisplayObjImage
 
-content = DisplayContent(columns=28, rows=13)
-sim = DisplaySimulation(28, 13, content)
+COLUMNS=28
+ROWS=13
 
-sim.refresh()
+content = DisplayContent(columns=COLUMNS, rows=ROWS)
+sim = DisplaySimulation(COLUMNS, ROWS, content)
 
-content.set(0,0, Pixel.LIGHT)
-content.set(1,1, Pixel.LIGHT)
-
-sim.refresh()
-
-content.set_all(Pixel.LIGHT)
-
-sim.refresh()
+# img = DisplayObjImage("example.gif")
+# img.insert(content)
+# content.invert()
+# sim.refresh()
 
 content.set_all(Pixel.DARK)
 
+seq = DisplayObjCharSequence("Hallo")
+seq.insert(content, 0, 3)
 sim.refresh()
