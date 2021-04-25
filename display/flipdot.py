@@ -1,7 +1,7 @@
-from display.base import DisplayBase
+from display.base import Display
 from display.content import DisplayContent
 
-class DisplayFlipdot(DisplayBase):
+class DisplayFlipdot(Display):
 	def __init__(self, columns : int, rows : int, content : DisplayContent):
 		super(DisplayFlipdot, self).__init__(columns, rows, content)
 		self.__previous_content = content.copy()

@@ -2,9 +2,9 @@ from typing import List
 from PIL import Image
 
 from display.content import Pixel, DisplayContent
-from display.object.base import DispObjBase
+from display.object.base import DisplayObj
 
-class DisplayObjImage(DispObjBase):
+class DisplayObjImage(DisplayObj):
 	def __init__(self, path : str):
 		self.__path : str = path
 		img = Image.open(path)

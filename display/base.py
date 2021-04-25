@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from display.content import DisplayContent
 
-class DisplayBase(ABC):
+class Display(ABC):
 	def __init__(self, columns : int, rows : int, content : DisplayContent):
 		self.columns : int = columns
 		self.rows : int = rows

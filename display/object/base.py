@@ -3,7 +3,7 @@ from typing import List
 
 from display.content import Pixel, DisplayContent
 
-class DispObjBase(ABC):
+class DisplayObj(ABC):
 	def __init__(self, data : List[List[Pixel]]):
 		self.__data = data
 

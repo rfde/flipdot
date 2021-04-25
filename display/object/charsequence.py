@@ -1,12 +1,12 @@
 from typing import Dict, List
 
 from display.content import Pixel, DisplayContent
-from display.object.base import DispObjBase
+from display.object.base import DisplayObj
 
 L = Pixel.LIGHT
 D = Pixel.DARK
 
-class DisplayObjCharSequence(DispObjBase):
+class DisplayObjCharSequence(DisplayObj):
 	CHARACTERS : Dict[str, List[List[Pixel]]] = {
 		"inter-character-space": [
 			[D, D, D, D, D, D, D]
