@@ -1,7 +1,7 @@
 from typing import List
 from PIL import Image
 
-from display.content import Pixel, DisplayContent
+from display.pixel import Pixel
 from display.object.base import DisplayObj
 
 class DisplayObjImage(DisplayObj):

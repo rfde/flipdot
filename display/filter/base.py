@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Tuple
 
-from display.content import Pixel
+from display.pixel import Pixel
 
 class DisplayFilter(ABC):
 	def __init__(self):

@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from display.content import Pixel, DisplayContent
+from display.pixel import Pixel
 from display.object.base import DisplayObj
 
 L = Pixel.LIGHT
@@ -301,7 +301,7 @@ class DisplayObjCharSequence(DisplayObj):
 	def __init__(self, string : str):
 		data : List[List[Pixel]] = []
 		self.__string : str = string
-		string : str = string.upper()
+		string = string.upper()
 		for char in string:
 			if not char in DisplayObjCharSequence.CHARACTERS:
 				print(f"WARN: Unknown character '{char}'")

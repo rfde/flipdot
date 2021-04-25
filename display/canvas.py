@@ -1,12 +1,10 @@
 from __future__ import annotations # type annotations for the current class
-from typing import List
-from enum import Enum
+from typing import List, Tuple
 
-class Pixel(Enum):
-	DARK  = 0
-	LIGHT = 1
+from display.pixel import Pixel
+from display.filter.base import DisplayFilter
 
-class DisplayContent:
+class DisplayCanvas:
 	def __init__(self, columns : int, rows : int, data : List[List[Pixel]] = None, filters : List[DisplayFilter] = None):
 		assert(columns > 0 and rows > 0)
 		
@@ -59,7 +57,7 @@ class DisplayContent:
 		column_vector = self.__data[column].copy()
 		if filtered:
 			for row_idx in range(len(column_vector)):
-				for f in filters:
+				for f in self.__filters:
 					column_vector[row_idx] = f.filter_value(column_vector[row_idx])
 		return column_vector
 
@@ -91,12 +89,12 @@ class DisplayContent:
 	# 			self.__data[column_idx][row_idx] = \
 	# 				Pixel.LIGHT if self.__data[column_idx][row_idx] == Pixel.DARK else Pixel.DARK
 
-	def diff_column_vectors(self, other : DisplayContent) -> List[Tuple[int, List[Pixel]]]:
+	def diff_column_vectors(self, other : DisplayCanvas) -> List[Tuple[int, List[Pixel]]]:
 		"""
-		Compares two DisplayContent objects. Returns the column vectors from self that
+		Compares two DisplayCanvas objects. Returns the column vectors from self that
 		differ from those in other.
 		
-		:param      other:  The other DIsplayContent
+		:param      other:  The other DisplayCanvas
 		
 		:returns:   A list of tuples that represent differing columns; each tuple contains
 		            column index and contents of that column from self.
@@ -106,12 +104,12 @@ class DisplayContent:
 		for column_idx in range(self.num_columns()):
 			same = True
 			for row_idx in range(self.num_rows()):
-				if self.get(column_idx, row_idx) != other.get(column_idx, row_idx):
+				if self.get(column_idx, row_idx, True) != other.get(column_idx, row_idx, True):
 					same = False
 					break
 			if not same:
-				result.append((column_idx, self.get_column_vector(column_idx)))
+				result.append((column_idx, self.get_column_vector(column_idx, True)))
 		return result
 
-	def copy(self) -> DisplayContent:
-		return DisplayContent(self.num_columns(), self.num_rows(), self.__data, self.__filters)
+	def copy(self) -> DisplayCanvas:
+		return DisplayCanvas(self.num_columns(), self.num_rows(), self.__data, self.__filters)

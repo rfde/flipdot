@@ -1,6 +1,6 @@
 from typing import Tuple
 from display.filter.base import DisplayFilter
-from display.content import Pixel
+from display.pixel import Pixel
 
 class DisplayFilterRotate180(DisplayFilter):
 	def __init__(self, columns : int, rows : int):
