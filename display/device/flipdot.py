@@ -42,9 +42,8 @@ class DisplayDeviceFlipdot(DisplayDevice):
 				send_msg=bytes(f"{column_id};{column_dec_lo};{column_dec_hi}\r", encoding="ascii"),
 				expect_msg=b"Daten\r"
 			)
-			self.__send_msg(
-				send_msg=b"30\r",
-				expect_msg=b"Refresh\r"
-			)
-			time.sleep(0.1)
+		self.__send_msg(
+			send_msg=b"30\r",
+			expect_msg=b"Refresh\r"
+		)
 		self.__previous_canvas = self._canvas.copy()
