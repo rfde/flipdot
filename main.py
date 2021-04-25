@@ -18,6 +18,8 @@ sim_f = DisplayDeviceSimulation(COLUMNS, ROWS, canvas)
 sim_u = DisplayDeviceSimulation(COLUMNS, ROWS, canvas, False)
 flipd = DisplayDeviceFlipdot(COLUMNS, ROWS, canvas, "/dev/ttyUSB0")
 
+canvas.add_filter(DisplayFilterRotate180(canvas.num_columns(), canvas.num_rows()))
+
 img = DisplayObjImage("example.gif")
 img.insert(canvas)
 sim_f.refresh()
