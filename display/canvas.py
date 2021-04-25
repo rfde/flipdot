@@ -1,4 +1,6 @@
 from __future__ import annotations # type annotations for the current class
+
+import copy
 from typing import List, Tuple, Optional
 
 from display.pixel import Pixel
@@ -49,17 +51,14 @@ class DisplayCanvas:
 		return value
 
 	def get_column_vector(self, column : int, filtered : bool) -> List[Pixel]:
-		# apply coordinate filters
 		if filtered:
-			for f in self.__filters:
-				column, _ = f.filter_coordinate(column, 0)
-		# apply value filters
-		column_vector = self.__data[column].copy()
-		if filtered:
-			for row_idx in range(len(column_vector)):
-				for f in self.__filters:
-					column_vector[row_idx] = f.filter_value(column_vector[row_idx])
-		return column_vector
+			result : List[Pixel] = []
+			for row_idx in range(self.num_rows()):
+				result.append(self.get(column, row_idx, filtered=True))
+			return result
+		else:
+			return self.__data[column].copy()
+
 	
 	def add_filter(self, dfilter : DisplayFilter) -> None:
 		self.__filters.append(dfilter)
@@ -90,4 +89,4 @@ class DisplayCanvas:
 		return result
 
 	def copy(self) -> DisplayCanvas:
-		return DisplayCanvas(self.num_columns(), self.num_rows(), self.__data, self.__filters)
+		return DisplayCanvas(self.num_columns(), self.num_rows(), copy.deepcopy(self.__data), copy.deepcopy(self.__filters))

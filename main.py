@@ -1,3 +1,5 @@
+import time
+
 from display.pixel import Pixel
 from display.canvas import DisplayCanvas
 from display.device.simulation import DisplayDeviceSimulation

@@ -23,8 +23,7 @@ class DisplayDeviceFlipdot(DisplayDevice):
 
 	def __send_msg(self, send_msg : str, expect_msg : str) -> bool:
 		self.__serial.write(send_msg)
-		# return self.__serial.read(len(expect_msg)) == expect_msg
-		return True
+		return self.__serial.read(len(expect_msg)) == expect_msg
 
 	@staticmethod
 	def __column_vector_to_dec(vector : List[Pixel]) -> Tuple[int,int]:
@@ -40,12 +39,12 @@ class DisplayDeviceFlipdot(DisplayDevice):
 			column_id : int = column[0] + 1
 			column_dec_lo, column_dec_hi = DisplayDeviceFlipdot.__column_vector_to_dec(column[1])
 			self.__send_msg(
-				send_msg=f"{column_id};{column_dec_lo};{column_dec_hi}\r",
-				expect_msg=f"Daten\r"
+				send_msg=bytes(f"{column_id};{column_dec_lo};{column_dec_hi}\r", encoding="ascii"),
+				expect_msg=b"Daten\r"
 			)
 			self.__send_msg(
-				send_msg=f"30\r",
-				expect_msg=f"Refresh\r"
+				send_msg=b"30\r",
+				expect_msg=b"Refresh\r"
 			)
 			time.sleep(0.1)
 		self.__previous_canvas = self._canvas.copy()
