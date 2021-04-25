@@ -8,9 +8,9 @@ class DisplayDeviceSimulation(DisplayDevice):
 		self.__filtered : bool = filtered
 
 	def refresh(self):
-		for r in range(self.rows):
+		for r in range(self._rows):
 			row_str = ""
-			for c in range(self.columns):
-				row_str += "\u2588" if self.__canvas.get(c, r, self.__filtered) == Pixel.LIGHT else "."
+			for c in range(self._columns):
+				row_str += "\u2588" if self._canvas.get(c, r, self.__filtered) == Pixel.LIGHT else "."
 			print(row_str)
 		print()

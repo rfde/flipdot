@@ -35,7 +35,7 @@ class DisplayDeviceFlipdot(DisplayDevice):
 		return (result & 0xff, result >> 8)
 
 	def refresh(self):
-		columns_to_refresh : List[Tuple[int, List[Pixel]]] = self.__canvas.diff_column_vectors(self.__previous_canvas)
+		columns_to_refresh : List[Tuple[int, List[Pixel]]] = self._canvas.diff_column_vectors(self.__previous_canvas)
 		for column in columns_to_refresh:
 			column_id : int = column[0] + 1
 			column_dec_lo, column_dec_hi = DisplayDeviceFlipdot.__column_vector_to_dec(column[1])
@@ -48,4 +48,4 @@ class DisplayDeviceFlipdot(DisplayDevice):
 				expect_msg=f"Refresh\r"
 			)
 			time.sleep(0.1)
-		self.__previous_canvas = self.__canvas.copy()
+		self.__previous_canvas = self._canvas.copy()
