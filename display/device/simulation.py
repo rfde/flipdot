@@ -11,6 +11,6 @@ class DisplayDeviceSimulation(DisplayDevice):
 		for r in range(self.rows):
 			row_str = ""
 			for c in range(self.columns):
-				row_str += "\u2588" if self.canvas.get(c, r, self.__filtered) == Pixel.LIGHT else "."
+				row_str += "\u2588" if self.__canvas.get(c, r, self.__filtered) == Pixel.LIGHT else "."
 			print(row_str)
 		print()

@@ -1,5 +1,5 @@
 from __future__ import annotations # type annotations for the current class
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from display.pixel import Pixel
 from display.filter.base import DisplayFilter
@@ -10,14 +10,14 @@ class DisplayCanvas:
 		
 		if data:
 			assert(columns == len(data) and rows == len(data[0]))
-			self.__data = data.copy()
+			self.__data : List[List[Pixel]] = data.copy()
 		else:
-			self.__data : List[List[Pixel]] = [[Pixel.DARK for y in range(rows)] for x in range(columns)]
+			self.__data = [[Pixel.DARK for y in range(rows)] for x in range(columns)]
 		
 		if filters:
-			self.__filters = filters.copy()
+			self.__filters : List[DisplayFilter] = filters.copy()
 		else:
-			self.__filters : List[DisplayFilter] = []
+			self.__filters = []
 
 	def num_columns(self) -> int:
 		return len(self.__data)
@@ -60,7 +60,6 @@ class DisplayCanvas:
 				for f in self.__filters:
 					column_vector[row_idx] = f.filter_value(column_vector[row_idx])
 		return column_vector
-
 	
 	def add_filter(self, dfilter : DisplayFilter) -> None:
 		self.__filters.append(dfilter)
@@ -68,47 +67,26 @@ class DisplayCanvas:
 	def clear_filters(self) -> None:
 		self.__filters.clear()
 
-	# def reverse_columns(self) -> None:
-	# 	self.__data = self.__data[::-1]
-
-	# def reverse_rows(self) -> None:
-	# 	for column_idx in range(self.num_columns()):
-	# 		self.__data[column_idx] = self.__data[column_idx][::-1]
-
-	# def rotate_180(self) -> None:
-	# 	self.reverse_columns()
-	# 	self.reverse_rows()
-
-	# def invert(self, x : int = 0, y : int = 0, width : int = None, height : int = None) -> None:
-	# 	if width is None:
-	# 		width = self.num_columns()
-	# 	if height is None:
-	# 		height = self.num_rows()
-	# 	for column_idx in range(x, min(x+width, self.num_columns())):
-	# 		for row_idx in range(y, min(y+height, self.num_rows())):
-	# 			self.__data[column_idx][row_idx] = \
-	# 				Pixel.LIGHT if self.__data[column_idx][row_idx] == Pixel.DARK else Pixel.DARK
-
-	def diff_column_vectors(self, other : DisplayCanvas) -> List[Tuple[int, List[Pixel]]]:
+	def diff_column_vectors(self, other : Optional[DisplayCanvas]) -> List[Tuple[int, List[Pixel]]]:
 		"""
 		Compares two DisplayCanvas objects. Returns the column vectors from self that
-		differ from those in other.
-		
-		:param      other:  The other DisplayCanvas
-		
-		:returns:   A list of tuples that represent differing columns; each tuple contains
-		            column index and contents of that column from self.
+		differ from those in other. If other is None, return all column vectors.
 		"""
-		assert(self.num_columns() == other.num_columns() and self.num_rows() == other.num_rows())
 		result : List[Tuple[int, List[Pixel]]] = []
-		for column_idx in range(self.num_columns()):
-			same = True
-			for row_idx in range(self.num_rows()):
-				if self.get(column_idx, row_idx, True) != other.get(column_idx, row_idx, True):
-					same = False
-					break
-			if not same:
-				result.append((column_idx, self.get_column_vector(column_idx, True)))
+		if other is None:
+			for column_idx in range(self.num_columns()):
+				result.append((column_idx, self.get_column_vector(column_idx, filtered=True)))
+		else:
+			assert(self.num_columns() == other.num_columns() and self.num_rows() == other.num_rows())
+			for column_idx in range(self.num_columns()):
+				same = True
+				for row_idx in range(self.num_rows()):
+					if self.get(column_idx, row_idx, filtered=True) \
+							!= other.get(column_idx, row_idx, filtered=True):
+						same = False
+						break
+				if not same:
+					result.append((column_idx, self.get_column_vector(column_idx, filtered=True)))
 		return result
 
 	def copy(self) -> DisplayCanvas:

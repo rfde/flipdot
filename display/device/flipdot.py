@@ -1,8 +1,10 @@
 import serial
-from typing import Optional
+import time
+from typing import Optional, List, Tuple
 
 from display.device.base import DisplayDevice
 from display.canvas import DisplayCanvas
+from display.pixel import Pixel
 
 class DisplayDeviceFlipdot(DisplayDevice):
 	def __init__(self, columns : int, rows : int, canvas : DisplayCanvas, ttydev : str):
@@ -16,6 +18,34 @@ class DisplayDeviceFlipdot(DisplayDevice):
 		)
 		self.__previous_canvas : Optional[DisplayCanvas] = None
 
+	def __del__(self):
+		self.__serial.close()
+
+	def __send_msg(self, send_msg : str, expect_msg : str) -> bool:
+		self.__serial.write(send_msg)
+		# return self.__serial.read(len(expect_msg)) == expect_msg
+		return True
+
+	@staticmethod
+	def __column_vector_to_dec(vector : List[Pixel]) -> Tuple[int,int]:
+		result : int = 0
+		for i in range(len(vector)):
+			if vector[i] == Pixel.LIGHT:
+				result = result | (1 << i)
+		return (result & 0xff, result >> 8)
+
 	def refresh(self):
-		# TODO: compute difference to __previous_canvas and send difference to display
-		pass
+		columns_to_refresh : List[Tuple[int, List[Pixel]]] = self.__canvas.diff_column_vectors(self.__previous_canvas)
+		for column in columns_to_refresh:
+			column_id : int = column[0] + 1
+			column_dec_lo, column_dec_hi = DisplayDeviceFlipdot.__column_vector_to_dec(column[1])
+			self.__send_msg(
+				send_msg=f"{column_id};{column_dec_lo};{column_dec_hi}\r",
+				expect_msg=f"Daten\r"
+			)
+			self.__send_msg(
+				send_msg=f"30\r",
+				expect_msg=f"Refresh\r"
+			)
+			time.sleep(0.1)
+		self.__previous_canvas = self.__canvas.copy()
