@@ -11,13 +11,13 @@ class MarqueeDirection(Enum):
 	LTR = 1
 
 class DisplayProgramMarquee(DisplayProgram):
-	def __init__(self, obj : DisplayObj, direction : MarqueeDirection, canvas : DisplayCanvas, canvas_x : int = 0, canvas_y : int = 0, update_interval : int = 1):
+	def __init__(self, obj : DisplayObj, direction : MarqueeDirection, canvas : DisplayCanvas, canvas_y : int = 0, update_interval : int = 1):
 		self.__obj = obj
 		self.__direction = direction
 		# y = -1 means center over full width/height.
 		if canvas_y == -1:
 			canvas_y = math.floor((canvas.num_rows() - obj.num_rows()) / 2)
-		super(DisplayProgramMarquee, self).__init__(canvas, canvas_x, canvas_y, update_interval)
+		super(DisplayProgramMarquee, self).__init__(canvas, 0, canvas_y, update_interval)
 		self.__reset_x()
 
 	def __leftmost_offset(self) -> int:

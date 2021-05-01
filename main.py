@@ -18,7 +18,6 @@ COLUMNS=28
 ROWS=13
 
 canvas = DisplayCanvas(columns=COLUMNS, rows=ROWS)
-sim_f = DisplayDeviceSimulation(COLUMNS, ROWS, canvas)
 sim_u = DisplayDeviceSimulation(COLUMNS, ROWS, canvas, False)
 # flipd = DisplayDeviceFlipdot(COLUMNS, ROWS, canvas, "/dev/ttyUSB0")
 
@@ -30,14 +29,14 @@ programs = [
 	# 	canvas, -1, 0
 	# ),
 	# DisplayProgramStatic(
-	# 	DisplayObjCharSequence("00000", Font.NUMERICWIDE6),
-	# 	canvas, -1, 7
-	# )
+	# 	DisplayObjImage("example.gif"),
+	# 	canvas, 0, 0
+	# ),
 	# DisplayProgramMarquee(
-	# 	DisplayObjCharSequence("01.05.2021", Font.NUMERICWIDE6),
+	# 	DisplayObjCharSequence("HELLO WORLD", Font.CONDENSED7),
 	# 	MarqueeDirection.RTL,
-	# 	canvas, 0, 7
-	# )
+	# 	canvas, -1
+	# ),
 	DisplayProgramClock(ClockMode.TIME_HM, canvas, 0),
 	DisplayProgramClock(ClockMode.DATE_DM, canvas, 7)
 ]
@@ -50,7 +49,6 @@ while True:
 			changed += 1
 
 	if changed > 0:
-		sim_f.refresh()
 		sim_u.refresh()
 		# flipd.refresh()
 
