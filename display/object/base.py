@@ -14,7 +14,7 @@ class DisplayObj(ABC):
 	def num_rows(self) -> int:
 		return 0 if len(self.__data) == 0 else len(self.__data[0])
 
-	def insert(self, canvas : DisplayCanvas, canvas_x : int = 0, canvas_y : int = 0, off_x : int = 0, off_y : int = 0):
+	def draw(self, canvas : DisplayCanvas, canvas_x : int = 0, canvas_y : int = 0, off_x : int = 0, off_y : int = 0):
 		remaining_cs_columns = self.num_columns() - off_x
 		remaining_cs_rows    = self.num_rows() - off_y
 		remaining_ct_columns = canvas.num_columns() - canvas_x
