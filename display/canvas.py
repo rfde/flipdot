@@ -36,6 +36,11 @@ class DisplayCanvas:
 			for row_idx in range(self.num_rows()):
 				self.set(column_idx, row_idx, value)
 
+	def set_square(self, x : int, y : int, width : int, height : int, value : Pixel) -> None:
+		for column_idx in range(x, x + width):
+			for row_idx in range(y, y + height):
+				self.set(column_idx, row_idx, value)
+
 	def get(self, column : int, row : int, filtered : bool) -> Pixel:
 		# apply coordinate filters
 		if filtered:
