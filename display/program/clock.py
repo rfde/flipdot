@@ -10,10 +10,10 @@ from display.object.charsequence import DisplayObjCharSequence, Font
 
 class ClockMode(Enum):
 	TIME_HM = 0
-	TIME_HMS = 0
-	DATE_DMY = 1
-	DATE_DM = 2
-	DOW = 3
+	TIME_HMS = 1
+	DATE_DMY = 2
+	DATE_DM = 3
+	DOW = 4
 
 class DisplayProgramClock(DisplayProgram):
 	def __init__(self, mode : ClockMode, canvas : DisplayCanvas, canvas_y : int = 0):

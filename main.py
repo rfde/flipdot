@@ -38,8 +38,8 @@ programs = [
 	# 	MarqueeDirection.RTL,
 	# 	canvas, 0, 7
 	# )
-	DisplayProgramClock(ClockMode.TIME_HMS, canvas, 0),
-	DisplayProgramClock(ClockMode.DATE_DMY, canvas, 7)
+	DisplayProgramClock(ClockMode.TIME_HM, canvas, 0),
+	DisplayProgramClock(ClockMode.DATE_DM, canvas, 7)
 ]
 
 timer : int = 0
